@@ -6,12 +6,14 @@ const getPostFeed = async (req, res) => {
     const userId = req.user._id;
     const user = await User.findById(userId);
 
+    // if user not find then return from here!
     if (!user)
       return res.status(400).json({
         message: "User not found",
       });
 
     const following = user.following;
+
     // find posts which are posted by the ppl we are following
     const getFeed = await Post.find({ postedBy: { $in: following } }).sort({
       createdAt: -1,

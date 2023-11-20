@@ -23,6 +23,8 @@ export default function UpdateProfilePage() {
   const [user, setUser] = useRecoilState(userAtom);
   const [updating, setUpdating] = useState(false);
 
+  console.log(user);
+
   const [inputs, setInputs] = useState({
     name: user.name,
     username: user.username,
@@ -33,6 +35,7 @@ export default function UpdateProfilePage() {
 
   const { handleImageChange, imgUrl } = usePreviewingImg();
   const fileRef = useRef(null);
+  console.log();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +48,10 @@ export default function UpdateProfilePage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...inputs, profilePic: imgUrl }),
+        body: JSON.stringify({
+          ...inputs,
+          profilepic: imgUrl === null ? user.profilepic : imgUrl,
+        }),
       });
 
       const data = await res.json();
@@ -80,6 +86,7 @@ export default function UpdateProfilePage() {
       setUpdating(false);
     }
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <Flex align={"center"} justify={"center"} my={6}>
@@ -98,7 +105,10 @@ export default function UpdateProfilePage() {
           <FormControl id="userName">
             <Stack direction={["column", "row"]} spacing={6}>
               <Center>
-                <Avatar size="xl" src={imgUrl || user.profilepic} />
+                <Avatar
+                  size="xl"
+                  src={imgUrl === null ? user.profilepic : imgUrl}
+                />
               </Center>
               <Center w="full">
                 <Button w="full" onClick={() => fileRef.current.click()}>

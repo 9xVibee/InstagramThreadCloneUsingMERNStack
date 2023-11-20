@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import connectDb from "./db/connectDB.js";
+import connectDb from "./db/connectDb.js";
 import cookieParser from "cookie-parser";
 import { v2 as cloudinary } from "cloudinary";
 // importing routes
@@ -14,7 +14,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true })); // to parse form data in the req.body
 app.use(express.json({ limit: "50mb" })); // to prase JSON data in the req.body, bcoz of this we can easily access the req.body data!
 app.use(cookieParser()); // it is allow us to get the cookie from the request and to set the cookie in response
-
+  
 // using the dotenv
 dotenv.config();
 

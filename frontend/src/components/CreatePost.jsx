@@ -15,6 +15,7 @@ import {
   ModalOverlay,
   Text,
   Textarea,
+  useColorModeValue,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -121,14 +122,14 @@ const CreatePost = () => {
         bottom={9}
         right={10}
         leftIcon={<AddIcon />}
-        // bg={useColorModeValue("gray.300", "gray.dark")}
+        bg={useColorModeValue("gray.300", "gray.dark")}
         onClick={onOpen}
       >
         Post
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg={"gray.dark"}>
           <ModalHeader>Create Post</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
@@ -177,7 +178,7 @@ const CreatePost = () => {
           </ModalBody>
           <ModalFooter>
             <Button
-              colorScheme="blue"
+              bg={"gray.dark"}
               mr={3}
               onClick={handleCreatePost}
               isLoading={loading}

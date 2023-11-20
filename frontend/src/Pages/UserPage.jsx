@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import UserHeader from "../components/UserHeader";
 import { useParams } from "react-router-dom";
@@ -17,6 +18,7 @@ const UserPage = () => {
     const getUser = async () => {
       setLoading(true);
       try {
+        console.log("How many times!");
         const res = await fetch(`/api/users/profile/${username}`);
         const data = await res.json();
 
@@ -28,12 +30,10 @@ const UserPage = () => {
             duration: 3000,
             isClosable: true,
           });
-          return;
+        } else {
+          getPost();
+          setUser(data);
         }
-        console.log(username);
-
-        console.log(data);
-        setUser(data);
       } catch (err) {
         console.log("Error in user Headers " + err.message);
       } finally {
@@ -41,40 +41,38 @@ const UserPage = () => {
       }
     };
     getUser();
+  }, []);
 
-    const getPost = async () => {
-      setFetchingPost(true);
-      try {
-        const res = await fetch(`/api/posts/user/${username}`);
-        const data = await res.json();
+  const getPost = async () => {
+    setFetchingPost(true);
+    try {
+      const res = await fetch(`/api/posts/user/${username}`);
+      const data = await res.json();
 
-        if (data.error) {
-          toast({
-            title: "Error",
-            description: data.error,
-            status: "error",
-            duration: 3000,
-            isClosable: true,
-          });
-          return;
-        }
-        setPosts(data);
-      } catch (error) {
-        toast({
+      if (data.error) {
+        return toast({
           title: "Error",
-          description: error.message,
+          description: "Post not found",
           status: "error",
           duration: 3000,
           isClosable: true,
         });
-        console.log(error);
-        return;
-      } finally {
-        setFetchingPost(false);
       }
-    };
-    getPost();
-  }, [toast, user?.username, username]);
+      setPosts(data);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      console.log(error);
+      return;
+    } finally {
+      setFetchingPost(false);
+    }
+  };
 
   if (!user && loading) {
     return (

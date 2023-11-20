@@ -4,6 +4,8 @@ import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtoms";
 import { AiFillHome } from "react-icons/ai";
 import { RxAvatar } from "react-icons/rx";
+import { BsFillChatQuoteFill } from "react-icons/bs";
+import LogoutButton from "./LogoutButton";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -24,9 +26,15 @@ const Header = () => {
         w={6}
       />
       {user && (
-        <Link as={RouterLink} to={`/${user.username}`}>
-          <RxAvatar size={24} />
-        </Link>
+        <Flex gap={5}>
+          <Link as={RouterLink} to={`/${user.username}`}>
+            <RxAvatar size={24} />
+          </Link>
+          <Link as={RouterLink} to={`/chat`}>
+            <BsFillChatQuoteFill size={24} />
+          </Link>
+          {user && <LogoutButton />}
+        </Flex>
       )}
     </Flex>
   );

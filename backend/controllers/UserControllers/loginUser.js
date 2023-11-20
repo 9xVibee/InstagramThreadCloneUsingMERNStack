@@ -32,7 +32,7 @@ const loginUser = async (req, res) => {
       email: user.email,
       username: user.username,
       bio: user.bio,
-      profilePic: user.profilePic,
+      profilepic: user.profilepic,
     });
   } catch (error) {
     // if error occurs then res -> error message!

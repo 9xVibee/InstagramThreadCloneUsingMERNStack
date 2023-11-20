@@ -12,7 +12,7 @@ import {
 import Actions from "../components/Actions";
 import { useEffect, useState } from "react";
 import Comment from "../components/Comment";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { formatDistanceToNow } from "date-fns";
@@ -180,7 +180,9 @@ const PostPage = () => {
           <Text fontSize={"2xl"}>👋</Text>
           <Text color={"grey.light"}> Get the app to like, reply and post</Text>
         </Flex>
-        <Button>Get</Button>
+        <Link to={"https://www.threads.net/login"}>
+          <Button>Get</Button>
+        </Link>
       </Flex>
       <Divider my={4} />
       {post.replies.map((reply) => {

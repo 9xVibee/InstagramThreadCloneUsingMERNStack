@@ -4,7 +4,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 const updateUser = async (req, res) => {
   const { name, username, email, password, bio } = req.body;
-  let { profilePic } = req.body;
+  let { profilepic } = req.body;
   const userId = req.user._id;
 
   try {
@@ -29,15 +29,15 @@ const updateUser = async (req, res) => {
     }
 
     // changing the profile and uploading to the cloudinary
-    if (profilePic) {
+    if (profilepic) {
       if (user.profilepic) {
         await cloudinary.uploader.destroy(
           user.profilepic.split("/").pop().split(".")[0]
         );
       }
 
-      const uploadedResponse = await cloudinary.uploader.upload(profilePic);
-      profilePic = uploadedResponse.secure_url;
+      const uploadedResponse = await cloudinary.uploader.upload(profilepic);
+      profilepic = uploadedResponse.secure_url;
       console.log("In clodinary");
     }
 
@@ -45,7 +45,7 @@ const updateUser = async (req, res) => {
     user.name = name || user.name;
     user.username = username || user.username;
     user.email = email || user.email;
-    user.profilepic = profilePic || user.profilePic;
+    user.profilepic = profilepic || user.profilePic;
     user.bio = bio || user.bio;
 
     user = await user.save();

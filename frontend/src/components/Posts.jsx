@@ -1,5 +1,13 @@
 /* eslint-disable react/prop-types */
-import { Avatar, Box, Flex, Image, Text, useToast } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Flex,
+  Image,
+  Text,
+  useColorModeValue,
+  useToast,
+} from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import Actions from "./Actions";
 import { useEffect, useState } from "react";
@@ -80,7 +88,15 @@ const Posts = ({ post, postedBy }) => {
   return (
     <Link to={`/${user?.username}/post/${post?._id}`}>
       {/* Dividing into sections */}
-      <Flex gap={4} mt={4} mb={10}>
+      <Flex
+        gap={4}
+        mt={3}
+        bg={useColorModeValue("gray.200", "gray.dark")}
+        py={4}
+        px={3}
+        pb={10}
+        borderRadius={10}
+      >
         {/* First section of profile and bar*/}
         <Flex flexDirection={"column"} alignItems={"center"}>
           <Avatar

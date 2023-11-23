@@ -1,8 +1,14 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import UserHeader from "../components/UserHeader";
 import { useParams } from "react-router-dom";
-import { Flex, Heading, Spinner, useToast } from "@chakra-ui/react";
+import {
+  Flex,
+  Heading,
+  Spinner,
+  useToast,
+} from "@chakra-ui/react";
 import Posts from "../components/Posts";
 
 const UserPage = () => {
@@ -96,8 +102,12 @@ const UserPage = () => {
         </Flex>
       )}
 
-      {posts.map((post) => {
-        return <Posts key={post._id} post={post} postedBy={post.postedBy} />;
+      {posts.map((data) => {
+        return (
+          <>
+            <Posts key={data._id} post={data} postedBy={data.postedBy} />
+          </>
+        );
       })}
     </>
   );

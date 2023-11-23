@@ -6,6 +6,7 @@ import { v2 as cloudinary } from "cloudinary";
 // importing routes
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
 
 // using express
 const app = express();
@@ -14,7 +15,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true })); // to parse form data in the req.body
 app.use(express.json({ limit: "50mb" })); // to prase JSON data in the req.body, bcoz of this we can easily access the req.body data!
 app.use(cookieParser()); // it is allow us to get the cookie from the request and to set the cookie in response
-  
+
 // using the dotenv
 dotenv.config();
 
@@ -34,6 +35,7 @@ cloudinary.config({
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/messages", messageRoutes);
 
 // listening the app
 app.listen(PORT, () => console.log(`server start at http://localhost:${PORT}`));

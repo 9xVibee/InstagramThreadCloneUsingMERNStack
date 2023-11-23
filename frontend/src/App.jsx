@@ -14,8 +14,11 @@ import ChatPage from "./Pages/ChatPage";
 function App() {
   const user = useRecoilValue(userAtom);
   return (
-    <Box position={"relative"} w={"full"}>
-      <Container maxW={"620px"}>
+    <Box
+      position={"relative"}
+      w={"full"}
+    >
+      <Container borderRadius={5} maxW={"620px"} p={2} px={5} mt={2}>
         <Header />
         <Routes>
           <Route

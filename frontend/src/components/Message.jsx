@@ -1,7 +1,14 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { Avatar, Flex, Text } from "@chakra-ui/react";
+import { useRecoilValue } from "recoil";
+import { selectedConversationAtom } from "../atoms/messagesAtom";
+import userAtom from "../atoms/userAtoms";
 
-const Message = ({ ownMessage }) => {
+const Message = ({ ownMessage, message }) => {
+  const selectedConversation = useRecoilValue(selectedConversationAtom);
+  const user = useRecoilValue(userAtom);
+
   return (
     <>
       {ownMessage ? (
@@ -13,16 +20,14 @@ const Message = ({ ownMessage }) => {
             borderRadius={"md"}
             color={"black"}
           >
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores,
-            architecto. Impedit, qui iusto officiis illo repellendus beatae
-            natus ipsa min!
+            {message.text}
           </Text>
-          <Avatar src="" w={7} h={7} />
+          <Avatar src={user.profilepic} w={7} h={7} />
         </Flex>
       ) : (
         <>
           <Flex paddingLeft={2} gap={2} alignSelf={"flex-start"}>
-            <Avatar src="" w={7} h={7} />
+            <Avatar src={selectedConversation.profilepic} w={7} h={7} />
             <Text
               maxW={"350px"}
               bg={"gray.400"}
@@ -30,8 +35,7 @@ const Message = ({ ownMessage }) => {
               borderRadius={"md"}
               color={"black"}
             >
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores,
-              architecto. Impedit, qui iusto officiis
+              {message.text}
             </Text>
           </Flex>
         </>

@@ -1,4 +1,4 @@
-import { Flex, Image, useColorMode } from "@chakra-ui/react";
+import { Flex, Image, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { Link, Link as RouterLink } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtoms";
@@ -12,7 +12,15 @@ const Header = () => {
   const user = useRecoilValue(userAtom);
 
   return (
-    <Flex justifyContent={"space-between"} mt={6} mb={12}>
+    <Flex
+      justifyContent={"space-between"}
+      mt={3}
+      mb={8}
+      bg={useColorModeValue("gray.200", "gray.dark")}
+      py={4}
+      px={3}
+      borderRadius={10}
+    >
       {user && (
         <Link as={RouterLink} to={"/"}>
           <AiFillHome size={24} />

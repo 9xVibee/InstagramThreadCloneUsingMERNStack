@@ -11,6 +11,7 @@ import {
   Portal,
   Text,
   VStack,
+  useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
 import { BsInstagram } from "react-icons/bs";
@@ -101,7 +102,15 @@ const UserHeader = ({ user }) => {
   };
 
   return (
-    <VStack alignItems={"start"} gap={4}>
+    <VStack
+      alignItems={"start"}
+      gap={4}
+      bg={useColorModeValue("gray.200", "gray.dark")}
+      px={5}
+      py={8}
+      borderRadius={10}
+      mb={5}
+    >
       <Flex w={"full"} justifyContent={"space-between"}>
         <Box>
           <Text fontSize={"2xl"} fontWeight={"bold"}>

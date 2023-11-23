@@ -39,7 +39,11 @@ const HomePage = () => {
       )}
 
       {posts.map((data) => {
-        return <Posts key={data._id} post={data} postedBy={data.postedBy} />;
+        return (
+          <>
+            <Posts key={data._id} post={data} postedBy={data.postedBy} />
+          </>
+        );
       })}
     </>
   );

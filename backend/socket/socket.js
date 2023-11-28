@@ -11,8 +11,28 @@ const io = new Server(server, {
   },
 });
 
+const userSocketMap = {}; // userId : socketId
+
+// receiver socket id
+export const getReceiverSocketId = (receiverId) => {
+  return userSocketMap[receiverId];
+}; 
+
 io.on("connection", (socket) => {
   console.log("user connected", socket.id);
+  // userId which we are sending as query from frontend socket
+  const userId = socket.handshake.query.userId;
+
+  if (userId != "undefined") userSocketMap[userId] = socket.id;
+
+  io.emit("getOnlineUsers", Object.keys(userSocketMap));
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+    delete userSocketMap[userId];
+
+    io.emit("getOnlineUsers", Object.keys(userSocketMap));
+  });
 });
 
 export { io, app, server };

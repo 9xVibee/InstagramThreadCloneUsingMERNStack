@@ -13,13 +13,18 @@ import {
 } from "@chakra-ui/react";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
-import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { selectedConversationAtom } from "../atoms/messagesAtom";
+import { useEffect, useRef, useState } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  conversationsAtom,
+  selectedConversationAtom,
+} from "../atoms/messagesAtom";
 import userAtom from "../atoms/userAtoms";
 import { useNavigate } from "react-router-dom";
+import { useSocket } from "../context/SocketContext";
 
 const MessageContainer = () => {
+  const messageRefEnd = useRef();
   const toast = useToast();
   const [selectedConversation, setSeletedConversation] = useRecoilState(
     selectedConversationAtom
@@ -28,6 +33,33 @@ const MessageContainer = () => {
   const [messages, setMessages] = useState([]);
   const currentUser = useRecoilValue(userAtom);
   const navigate = useNavigate();
+  const { socket } = useSocket();
+  const setConversations = useSetRecoilState(conversationsAtom);
+
+  useEffect(() => {
+    socket.on("newMessage", (message) => {
+      console.log(selectedConversation._id + " " + message.conversationId);
+      if (selectedConversation._id === message.conversationId)
+        setMessages((prevMessages) => [...prevMessages, message]);
+
+      setConversations((prev) => {
+        const updatedConversations = prev.map((conversation) => {
+          if (conversation._id === selectedConversation._id) {
+            return {
+              ...conversation,
+              lastMessage: {
+                text: message.text,
+                sender: message.sender,
+              },
+            };
+          }
+          return conversation;
+        });
+        return updatedConversations;
+      });
+    });
+    return () => socket.off("newMessage");
+  }, [socket]);
 
   // getting all the messages
   useEffect(() => {
@@ -65,6 +97,12 @@ const MessageContainer = () => {
     getMessages();
   }, [selectedConversation, toast]);
 
+  // scroll to new message
+  useEffect(() => {
+    messageRefEnd.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  });
   const handleNavigate = () => {
     navigate(`/${selectedConversation.username}`);
   };
@@ -123,11 +161,22 @@ const MessageContainer = () => {
         {!loadingMessage &&
           messages.map((msg, idx) => {
             return (
-              <Message
+              <Flex
                 key={idx}
-                message={msg}
-                ownMessage={msg.sender === currentUser._id}
-              />
+                flexDir={"column"}
+                marginBottom={-3}
+                ref={
+                  messages.length - 1 === messages.indexOf(msg)
+                    ? messageRefEnd
+                    : null
+                }
+              >
+                <Message
+                  key={idx}
+                  message={msg}
+                  ownMessage={msg.sender === currentUser._id}
+                />
+              </Flex>
             );
           })}
       </Flex>

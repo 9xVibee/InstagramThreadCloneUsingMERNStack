@@ -7,9 +7,7 @@ import { v2 as cloudinary } from "cloudinary";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
-
-// using express
-const app = express();
+import { app, server } from "./socket/socket.js";
 
 // using middleware
 app.use(express.urlencoded({ extended: true })); // to parse form data in the req.body
@@ -38,4 +36,6 @@ app.use("/api/posts", postRoutes);
 app.use("/api/messages", messageRoutes);
 
 // listening the app
-app.listen(PORT, () => console.log(`server start at http://localhost:${PORT}`));
+server.listen(PORT, () =>
+  console.log(`server start at http://localhost:${PORT}`)
+);

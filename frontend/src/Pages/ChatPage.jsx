@@ -22,6 +22,7 @@ import {
   selectedConversationAtom,
 } from "../atoms/messagesAtom";
 import userAtom from "../atoms/userAtoms";
+import { useSocket } from "../context/SocketContext";
 
 const ChatPage = () => {
   const toast = useToast();
@@ -33,6 +34,7 @@ const ChatPage = () => {
     selectedConversationAtom
   );
   const currentUser = useRecoilValue(userAtom);
+  const { socket, onlineUsers } = useSocket();
 
   // getting conversations!
   useEffect(() => {
@@ -216,7 +218,13 @@ const ChatPage = () => {
 
           {!loading &&
             conversations.map((convo, idx) => {
-              return <Conversation key={idx} conversation={convo} />;
+              return (
+                <Conversation
+                  isOnline={onlineUsers.includes(convo.participants[0]._id)}
+                  key={idx}
+                  conversation={convo}
+                />
+              );
             })}
         </Flex>
 

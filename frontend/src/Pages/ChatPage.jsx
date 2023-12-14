@@ -36,6 +36,27 @@ const ChatPage = () => {
   const currentUser = useRecoilValue(userAtom);
   const { socket, onlineUsers } = useSocket();
 
+  // updating seen
+  useEffect(() => {
+    socket?.on("messageSeen", ({ conversationId }) => {
+      setConversations((prev) => {
+        const updatedConversations = prev.map((conversation) => {
+          if (conversation._id === conversationId) {
+            return {
+              ...conversation,
+              lastMessage: {
+                ...conversation.lastMessage,
+                seen: true,
+              },
+            };
+          }
+          return conversation;
+        });
+        return updatedConversations;
+      });
+    });
+  }, [setConversations, socket]);
+
   // getting conversations!
   useEffect(() => {
     const getConversations = async () => {
@@ -217,7 +238,7 @@ const ChatPage = () => {
             })}
 
           {!loading &&
-            conversations.map((convo, idx) => {
+            conversations?.map((convo, idx) => {
               return (
                 <Conversation
                   isOnline={onlineUsers.includes(convo.participants[0]._id)}

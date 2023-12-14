@@ -19,74 +19,12 @@ import { CgMoreO } from "react-icons/cg";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtoms";
 import { Link, Link as RouterLink } from "react-router-dom";
-import { useState } from "react";
+import useFollowUnfollow from "../hooks/useFollowUnfollow";
 
 const UserHeader = ({ user }) => {
   const toast = useToast();
   const currentUser = useRecoilValue(userAtom);
-  const [updating, setUpdating] = useState(false);
-
-  const [following, setFollowing] = useState(
-    user && user.followers.includes(currentUser._id)
-  );
-
-  // handeling follow and unfollow
-  const handleFollowChange = async () => {
-    if (!currentUser) {
-      toast({
-        title: "Error",
-        description: "Please Login to follow",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    setUpdating(true);
-    try {
-      const res = await fetch(`/api/users/follow/${user._id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      if (data.error) {
-        toast({
-          title: "Error",
-          description: data.error,
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-        return;
-      }
-
-      if (following) {
-        user.followers.pop();
-      } else user.followers.push(currentUser._id);
-
-      toast({
-        title: data.message,
-        status: following ? "error" : "success",
-        duration: 3000,
-        isClosable: true,
-      });
-      setFollowing(!following);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: error,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      console.log(error);
-    } finally {
-      setUpdating(false);
-    }
-  };
+  const { handleFollowChange, updating, following } = useFollowUnfollow(user);
 
   // copy url component
   const copyUrl = () => {

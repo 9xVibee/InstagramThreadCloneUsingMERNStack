@@ -47,7 +47,6 @@ const MessageInput = ({ setMessages }) => {
         return;
       }
 
-      console.log(data);
       setMessages((prev) => [...prev, data]);
       setConversations((prevConvo) => {
         const updatedConversations = prevConvo.map((conversation) => {

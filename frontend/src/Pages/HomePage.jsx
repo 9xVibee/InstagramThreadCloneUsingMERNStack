@@ -1,6 +1,7 @@
-import { Flex, Heading, Spinner, useToast } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spinner, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Posts from "../components/Posts";
+import SuggestedUsers from "../components/SuggestedUsers";
 
 const HomePage = () => {
   const [posts, setPosts] = useState([]);
@@ -25,27 +26,41 @@ const HomePage = () => {
     getFeedPost();
   }, [toast]);
   return (
-    <>
-      {loading && (
-        <Flex justifyContent={"center"} alignItems={"center"}>
-          <Spinner size={"xl"} />
-        </Flex>
-      )}
+    <Flex gap={10} alignItems={"flex-start"}>
+      {/* Post side */}
+      <Box flex={70}>
+        {loading && (
+          <Flex justifyContent={"center"} alignItems={"center"}>
+            <Spinner size={"xl"} />
+          </Flex>
+        )}
 
-      {!loading && posts.length === 0 && (
-        <Flex justifyContent={"center"} alignItems={"center"} h={"70vh"}>
-          <Heading>Follow some users to see Posts</Heading>
-        </Flex>
-      )}
+        {!loading && posts.length === 0 && (
+          <Flex justifyContent={"center"} alignItems={"center"} h={"70vh"}>
+            <Heading>Follow some users to see Posts</Heading>
+          </Flex>
+        )}
 
-      {posts.map((data) => {
-        return (
-          <>
-            <Posts key={data._id} post={data} postedBy={data.postedBy} />
-          </>
-        );
-      })}
-    </>
+        {posts.length &&
+          posts.map((data, idx) => {
+            return (
+              <>
+                <Posts key={idx} post={data} postedBy={data.postedBy} />
+              </>
+            );
+          })}
+      </Box>
+      {/* Suggested user side */}
+      <Box
+        flex={30}
+        display={{
+          base: "none",
+          md: "block",
+        }}
+      >
+        <SuggestedUsers />
+      </Box>
+    </Flex>
   );
 };
 

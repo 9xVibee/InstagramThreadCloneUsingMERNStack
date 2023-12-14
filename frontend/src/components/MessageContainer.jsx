@@ -36,9 +36,46 @@ const MessageContainer = () => {
   const { socket } = useSocket();
   const setConversations = useSetRecoilState(conversationsAtom);
 
+  // handling seen
+  useEffect(() => {
+    const lastMessageIsFromOtherUser =
+      messages.length &&
+      messages[messages.length - 1].sender !== currentUser._id;
+
+    if (lastMessageIsFromOtherUser) {
+      socket.emit("markMessagesAsSeen", {
+        conversationId: selectedConversation._id,
+        userId: selectedConversation.userId,
+      });
+    }
+
+    socket.on("messageSeen", ({ conversationId }) => {
+      if (selectedConversation._id === conversationId) {
+        setMessages((prev) => {
+          const updatedMessages = prev.map((msg) => {
+            if (!msg.seen) {
+              return {
+                ...msg,
+                seen: true,
+              };
+            }
+            return msg;
+          });
+          return updatedMessages;
+        });
+      }
+    });
+  }, [
+    socket,
+    currentUser._id,
+    messages,
+    selectedConversation._id,
+    selectedConversation.userId,
+  ]);
+
+  // handling new message
   useEffect(() => {
     socket.on("newMessage", (message) => {
-      console.log(selectedConversation._id + " " + message.conversationId);
       if (selectedConversation._id === message.conversationId)
         setMessages((prevMessages) => [...prevMessages, message]);
 
@@ -137,6 +174,7 @@ const MessageContainer = () => {
         height={"420px"}
         overflowY={"scroll"}
         mt={2}
+        mb={2}
       >
         {loadingMessage &&
           [...Array(5)].map((_, i) => (

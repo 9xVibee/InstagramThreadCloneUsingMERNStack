@@ -3,6 +3,7 @@
 import {
   Avatar,
   AvatarBadge,
+  Box,
   Flex,
   Image,
   Stack,
@@ -66,7 +67,9 @@ const Conversation = ({ conversation, isOnline }) => {
         </Text>
         <Text fontSize={"xs"} display={"flex"} alignItems={"center"} gap={1}>
           {currentUser._id === conversation.lastMessage.sender ? (
-            <BsCheck2All size={16} />
+            <Box color={conversation.lastMessage.seen ? "blue.400" : ""}>
+              <BsCheck2All size={16} />
+            </Box>
           ) : (
             ""
           )}

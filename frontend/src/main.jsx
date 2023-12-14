@@ -18,16 +18,16 @@ const styles = {
   }),
 };
 
-const config = {
-  initialColorMode: "light",
-  useSystemColorMode: true,
-};
-
 const colors = {
   gray: {
     light: "#616161",
     dark: "#1e1e1e",
   },
+};
+
+const config = {
+  initialColorMode: "light",
+  useSystemColorMode: true,
 };
 
 const theme = extendTheme({ config, styles, colors });

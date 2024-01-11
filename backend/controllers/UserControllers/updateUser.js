@@ -9,14 +9,17 @@ const updateUser = async (req, res) => {
 
   try {
     let user = await User.findById(userId);
-
+    console.log(user);
     if (!user)
       return res.status(400).json({
         error: "user not found",
       });
 
+    console.log(userId);
+    console.log(req.params.id);
+
     //checking if it is the same user or not
-    if (req.params.id !== userId.toString())
+    if (req.params.id.toString() !== userId.toString())
       return res.status(400).json({
         message: "you cannot update other user account!",
       });

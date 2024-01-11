@@ -8,7 +8,7 @@ const protectRoute = async (req, res, next) => {
 
     if (!token)
       return res.status(401).json({
-        message: "Unauthorized, Login first",
+        error: "Unauthorized, Login first",
       });
 
     const decode = jwt.decode(token, process.env.JWT_SECRET);

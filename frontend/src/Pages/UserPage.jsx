@@ -3,12 +3,7 @@
 import { useEffect, useState } from "react";
 import UserHeader from "../components/UserHeader";
 import { useParams } from "react-router-dom";
-import {
-  Flex,
-  Heading,
-  Spinner,
-  useToast,
-} from "@chakra-ui/react";
+import { Flex, Heading, Spinner, useToast } from "@chakra-ui/react";
 import Posts from "../components/Posts";
 
 const UserPage = () => {

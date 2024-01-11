@@ -21,10 +21,12 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useSetRecoilState } from "recoil";
 import authScreenAtom from "../atoms/authAtoms";
 import userAtom from "../atoms/userAtoms";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const setRecoilState = useSetRecoilState(authScreenAtom);
   const userSet = useSetRecoilState(userAtom);
@@ -34,6 +36,7 @@ export default function LoginPage() {
     username: "",
     password: "",
   });
+
   const handleLogin = async () => {
     try {
       setLoading(true);
@@ -56,6 +59,7 @@ export default function LoginPage() {
         });
         return;
       }
+
       toast({
         title: data.message,
         status: "success",
@@ -64,6 +68,7 @@ export default function LoginPage() {
       });
       localStorage.setItem("user-threads", JSON.stringify(data));
       userSet(data);
+      navigate("/");
     } catch (error) {
       console.log("Error in handle login " + error);
     } finally {

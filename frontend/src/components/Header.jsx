@@ -10,7 +10,7 @@ import LogoutButton from "./LogoutButton";
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const user = useRecoilValue(userAtom);
-
+  console.log(user);
   return (
     <Flex
       justifyContent={"space-between"}
@@ -35,7 +35,10 @@ const Header = () => {
       />
       {user && (
         <Flex gap={5}>
-          <Link as={RouterLink} to={`/${user.username}`}>
+          <Link
+            as={RouterLink}
+            to={`/${user.username !== undefined ? user.username : ""}`}
+          >
             <RxAvatar size={24} />
           </Link>
           <Link as={RouterLink} to={`/chat`}>

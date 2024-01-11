@@ -23,8 +23,6 @@ export default function UpdateProfilePage() {
   const [user, setUser] = useRecoilState(userAtom);
   const [updating, setUpdating] = useState(false);
 
-  console.log(user);
-
   const [inputs, setInputs] = useState({
     name: user.name,
     username: user.username,
@@ -35,11 +33,9 @@ export default function UpdateProfilePage() {
 
   const { handleImageChange, imgUrl } = usePreviewingImg();
   const fileRef = useRef(null);
-  console.log();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       setUpdating(true);
       // updating profile
@@ -49,7 +45,11 @@ export default function UpdateProfilePage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ...inputs,
+          name: inputs.name,
+          bio: inputs.bio,
+          username: inputs.username,
+          email: inputs.email,
+          password: inputs.password,
           profilepic: imgUrl === null ? user.profilepic : imgUrl,
         }),
       });
